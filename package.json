@@ -2,23 +2,22 @@
   "name": "facebot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NDubenchuck/facebot.git"
+    "url": "git+https://MDubench@bitbucket.org/MDubench/facebot.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "NDubenchuck",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/NDubenchuck/facebot/issues"
+  "homepage": "https://bitbucket.org/MDubench/facebot#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.3"
   },
-  "homepage": "https://github.com/NDubenchuck/facebot#readme",
   "dependencies": {
-    "express": "^4.17.1",
-    "body-parser": "~1.10.1"
+    "express": "^4.17.1"
   }
 }
