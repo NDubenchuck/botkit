@@ -1,0 +1,24 @@
+{
+  "name": "botkit",
+  "version": "1.0.0",
+  "description": "test bot",
+  "main": "server.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^6.5.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NDubenchuck/botkit.git"
+  },
+  "author": "Mykyta Dubenchuck",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NDubenchuck/botkit/issues"
+  },
+  "homepage": "https://github.com/NDubenchuck/botkit#readme"
+}
