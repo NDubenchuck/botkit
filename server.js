@@ -17,12 +17,12 @@
 const http = require('http');
 const fs = require('fs');
 
-const index = fs.readFileSync ('./index.html', 'utf8');
+const index = fs.readFileSync ('index.html', 'utf8');
 const port = 6300;
 
 const requestHandler = (req, res) => {
   if(req.url === '/favicon.ico') {
-    return res.end('');
+    return res.end(index);
   }
   console.log(req.url, req.method);
   res.setHeader('content-type', 'text/html; charset=utf-8');
