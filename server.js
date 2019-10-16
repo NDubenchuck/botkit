@@ -1,15 +1,39 @@
-const express = require('express');
+// const express = require('express');
+//
+// const app =express();
+//
+// app.set('index.html');
+//
+// app.get('/', (req, res) => {
+//   res.render('index')
+// });
+//
+// const PORT = process.env.PORT || 3000;
+//
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}`)
+// });
 
-const app =express();
+const http = require('http');
+const fs = require('fs');
 
-app.set('index.html');
+const index = fs.readFileSync ('./index.html', 'utf8');
+const port = 6300;
 
-app.get('/', (req, res) => {
-  res.render('index')
-});
+const requestHandler = (req, res) => {
+  if(req.url === '/favicon.ico') {
+    return res.end('');
+  }
+  console.log(req.url, req.method);
+  res.setHeader('content-type', 'text/html; charset=utf-8');
+  res.end(index);
+};
 
-const PORT = process.env.PORT || 3000;
+const server = http.createServer(requestHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
+server.listen(port, (err) => {
+  if (err) {
+    console.error("eroorr", err)
+  }
+  console.log(`Server listening on port ${port}`);
 });
