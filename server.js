@@ -1,24 +1,8 @@
-// const express = require('express');
-//
-// const app =express();
-//
-// app.set('index.html');
-//
-// app.get('/', (req, res) => {
-//   res.render('index')
-// });
-//
-// const PORT = process.env.PORT || 3000;
-//
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}`)
-// });
-
 const http = require('http');
 const fs = require('fs');
 
-const index = fs.readFileSync ('./index.html', 'utf8');
-const port = 6300;
+const index = fs.readFileSync ('index.html', 'utf8');
+const port = process.env.PORT || 443;
 
 const requestHandler = (req, res) => {
   if(req.url === '/favicon.ico') {
@@ -35,5 +19,5 @@ server.listen(port, (err) => {
   if (err) {
     console.error("eroorr", err)
   }
-  console.log(`Server listening on port ${port}`);
+  console.log(`Server listdening on port ${port}`);
 });
