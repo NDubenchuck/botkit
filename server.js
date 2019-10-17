@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 
 const index = fs.readFileSync ('index.html', 'utf8');
-const port = _process.env.PORT || 443;
+const port = process.env.PORT || 443;
 
 const requestHandler = (req, res) => {
   if(req.url === '/favicon.ico') {
