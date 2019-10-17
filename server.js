@@ -35,7 +35,7 @@ server.listen(port, (err) => {
   if (err) {
     console.error("eroorr", err)
   }
-  console.log(`Server listening on port ${port}`);
+  console.log(`Server listdening on port ${port}`);
 });
 
 // const express = require('express')
