@@ -5,7 +5,6 @@ const
   bodyParser = require('body-parser'),
   app = express().use(bodyParser.json()); // creates express http server
 
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 app.post('/webhook', (req, res) => {
   let body = req.body;
   if (body.object === 'page') {
@@ -34,3 +33,6 @@ app.get('/webhook', (req, res) => {
     }
   }
 });
+
+app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+yo botkit
