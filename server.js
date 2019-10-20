@@ -35,4 +35,3 @@ app.get('/webhook', (req, res) => {
 });
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
-yo botkit
