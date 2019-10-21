@@ -28,11 +28,11 @@ if (process.env.MONGO_URI) {
 const adapter = new FacebookAdapter({
 
     // REMOVE THIS OPTION AFTER YOU HAVE CONFIGURED YOUR APP!
-    enable_incomplete: true,
+    // enable_incomplete: true,
 
-    verify_token: process.env.FACEBOOK_VERIFY_TOKEN,
-    access_token: process.env.FACEBOOK_ACCESS_TOKEN,
-    app_secret: process.env.FACEBOOK_APP_SECRET,
+    verify_token: 'hello',
+    access_token: 'EAAOIDTEqS4ABAFr2ZASHopoRWP4B1n3CEZBsIgyZCuo44ByFKzQcg3vEe7cecX7uO5iZCC1wZATFEZCKyWJsJiRX14ImEcs9npUNgZC77DxkwTHFydowkOhlCIFIcyDPKEbZCaVKZBWtPz1j2FWL9PGSEvOZAo7Mj9fPNHWqSNF60O02s7h4sKJJ6x',
+    app_secret: 'de397373632beb4b6d04acb785f2e608',
 });
 
 // emit events based on the type of facebook event being received
