@@ -55,35 +55,86 @@ if (process.env.cms_uri) {
 }
 
 // Once the bot has booted up its internal services, you can use them to do stuff.
-controller.ready(() => {
-
+// controller.ready(() => {
+//
+//     let bot = controller.spawn(106625137409624);
+//     controller.startConversationWithUser(994015170939776);
+//     bot.say('Howdy human!');
+//
+//
+    
     // load traditional developer-created local custom feature modules
     controller.loadModules(__dirname + '/features');
-
+    
     /* catch-all that uses the CMS to trigger dialogs */
     if (controller.plugins.cms) {
         controller.on('message,direct_message', async (bot, message) => {
             let results = false;
             results = await controller.plugins.cms.testTrigger(bot, message);
-
+            
             if (results !== false) {
                 // do not continue middleware!
                 return false;
             }
         });
     }
-
-});
-
-
-
-controller.webserver.get('/', (req, res) => {
-
-    res.send(`This app is running Botkit ${ controller.version }.`);
-
-});
-
-
+    
+    controller.hears('gr', function (bot, message) {
+        bot.reply(message,
+          {"greeting":[
+                  {
+                      "locale":"default",
+                      "text":"Hello!"
+                  }, {
+                      "locale":"en_GB",
+                      "text":"Add your text here."
+                  }
+              ]
+          }
+        )
+    })
+//     controller.api.messenger_profile.get_started('sample_get_started_payload');
+//     controller.api.messenger_profile.menu([{
+//         "locale":"default",
+//         "composer_input_disabled":true,
+//         "call_to_actions":[
+//             {
+//                 "title":"My Skills",
+//                 "type":"nested",
+//                 "call_to_actions":[
+//                     {
+//                         "title":"Hello",
+//                         "type":"postback",
+//                         "payload":"Hello"
+//                     },
+//                     {
+//                         "title":"Hi",
+//                         "type":"postback",
+//                         "payload":"Hi"
+//                     }
+//                 ]
+//             },
+//             {
+//                 "type":"web_url",
+//                 "title":"Botkit Docs",
+//                 "url":"https://github.com/howdyai/botkit/blob/master/readme-facebook.md",
+//                 "webview_height_ratio":"full"
+//             }
+//         ]
+//     },
+//         {
+//             "locale":"zh_CN",
+//             "composer_input_disabled":false
+//         }
+//     ]);
+// });
+    
+    
+    controller.webserver.get('/', (req, res) => {
+        
+        res.send(`This app is running Botkit ${controller.version}.`);
+        
+    })
 
 
 

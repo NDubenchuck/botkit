@@ -11,10 +11,16 @@ module.exports = function(controller) {
     controller.hears(async(message) => message.sticker_id, 'message', async(bot, message) => {
         await bot.reply(message,'Cool sticker.');
     });
-
-    controller.on('facebook_postback', async(bot, message) => {
-        await bot.reply(message,`I heard you posting back a post_back about ${ message.text }`);
+    
+    controller.on('access_token', function(bot, message) {
+        
+         bot.reply(message, 'Welcome to my app!');
+        
     });
-
-
-}
+    controller.hears(['куку', 'hi','hello','howdy','hey','aloha','hola','bonjour','oi'],['message'], async (bot,message) => {
+        
+        // do something to respond to message
+        await bot.reply(message,'Oh hai!');
+        
+    });
+};
