@@ -12,15 +12,10 @@ module.exports = function(controller) {
         await bot.reply(message,'Cool sticker.');
     });
     
-    controller.on('access_token', function(bot, message) {
-        
-         bot.reply(message, 'Welcome to my app!');
-        
-    });
     controller.hears(['куку', 'hi','hello','howdy','hey','aloha','hola','bonjour','oi'],['message'], async (bot,message) => {
         
         // do something to respond to message
-        await bot.reply(message,'Oh hai!');
+        await bot.reply(message,'Oh hai! I am a Bot! Can I help You?');
         
     });
 };

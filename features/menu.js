@@ -2,7 +2,7 @@ module.exports = function(controller) {
   let menu = [
     {
       title: 'My purchases',
-      payload: 'my_purcases'
+      payload: 'my_purchases'
     },
     {
       title: 'Shop',
@@ -20,24 +20,15 @@ module.exports = function(controller) {
   
   controller.on( 'facebook_postback', async(bot, message) => {
     
-    if (message.text ==='menu'||'Menu'){
+    if (message.text ==='Main menu'||'main menu'){
     await bot.reply(message, {
       text: 'Here is a menu!',
       quick_replies: menu
     })
+    } else if (message.text ==='List of products'){
+      await bot.reply(message, 'List of products')
     }
   });
   
-  controller.hears( 'Menu', 'message', async(bot, message) => {
-    
-    await bot.reply(message, {
-      text: 'Here is a menu!',
-      quick_replies: menu
-    });
-  });
-  
-  controller.hears('Second','message',  async(bot, message) => {
-    
-    await bot.reply(message,'Here is a second button!');
-  });
+  controller.loadModules(__dirname + '/lib');
 };
