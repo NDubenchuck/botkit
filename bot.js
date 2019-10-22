@@ -7,6 +7,8 @@
 // Import Botkit's core features
 const { Botkit } = require('botkit');
 const { BotkitCMSHelper } = require('botkit-plugin-cms');
+const mongoose = require('mongoose');
+const bby = require('bestbuy')('TGp7jkZIbKOzfRTDzkofjo2O');
 
 // Import a platform-specific adapter for facebook.
 
@@ -26,9 +28,6 @@ if (process.env.MONGO_URI) {
 
 
 const adapter = new FacebookAdapter({
-
-    // REMOVE THIS OPTION AFTER YOU HAVE CONFIGURED YOUR APP!
-    // enable_incomplete: true,
 
     verify_token: 'hello',
     access_token: 'EAAOIDTEqS4ABAFr2ZASHopoRWP4B1n3CEZBsIgyZCuo44ByFKzQcg3vEe7cecX7uO5iZCC1wZATFEZCKyWJsJiRX14ImEcs9npUNgZC77DxkwTHFydowkOhlCIFIcyDPKEbZCaVKZBWtPz1j2FWL9PGSEvOZAo7Mj9fPNHWqSNF60O02s7h4sKJJ6x',
@@ -54,15 +53,6 @@ if (process.env.cms_uri) {
     }));
 }
 
-// Once the bot has booted up its internal services, you can use them to do stuff.
-// controller.ready(() => {
-//
-//     let bot = controller.spawn(106625137409624);
-//     controller.startConversationWithUser(994015170939776);
-//     bot.say('Howdy human!');
-//
-//
-    
     // load traditional developer-created local custom feature modules
     controller.loadModules(__dirname + '/features');
     
