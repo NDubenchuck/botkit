@@ -31,6 +31,12 @@ module.exports = function(controller) {
       await bot.reply(message, 'List of products')
     }
   });
+  controller.hears(async(message) => { return (message.quick_reply.payload=='menu') }, 'message', async(bot, message) => {
+    await bot.reply(message, {
+      text: 'Here is a menu!',
+      quick_replies: menu
+    });
+  });
   
   
   controller.loadModules(__dirname + '/lib');
