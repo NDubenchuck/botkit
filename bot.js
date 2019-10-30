@@ -13,7 +13,7 @@ const { BotkitCMSHelper } = require('botkit-plugin-cms');
 const { FacebookAdapter, FacebookEventTypeMiddleware } = require('botbuilder-adapter-facebook');
 
 const { MongoDbStorage } = require('botbuilder-storage-mongodb');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
 // Load process.env values from .env file
 require('dotenv').config();
@@ -52,8 +52,12 @@ if (process.env.cms_uri) {
 }
 
     // load traditional developer-created local custom feature modules
+controller.ready(() => {
+    
+    // load traditional developer-created local custom feature modules
     controller.loadModules(__dirname + '/features');
-
+    // controller.loadModules(__dirname + '/features' + '/lib');
+    
     /* catch-all that uses the CMS to trigger dialogs */
     if (controller.plugins.cms) {
         controller.on('message,direct_message', async (bot, message) => {
@@ -66,6 +70,8 @@ if (process.env.cms_uri) {
             }
         });
     }
+    
+});
     
     controller.webserver.get('/', (req, res) => {
         
