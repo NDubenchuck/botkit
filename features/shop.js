@@ -60,7 +60,7 @@ controller.hears('shop','message',  async(bot, message) => {
             ]
           }
         };
-        bot.reply(message, attachment);
+        bot.reply(message, {attachment: attachment});
       }
     });
     

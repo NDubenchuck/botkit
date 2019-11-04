@@ -96,9 +96,9 @@ module.exports = function(controller) {
             ]
           }
         };
-        bot.reply(message, attachment);
+        bot.reply(message, {attachment: attachment});
       }
-    });
+    }).catch(e => console.log(e));
     
   });
   
