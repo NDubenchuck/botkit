@@ -4,7 +4,7 @@ module.exports = function createUser(username) {
     const userSchema = require('./user_schema.js');
     const User = mongoose.model( this.fbId, userSchema, 'user');
   
-    mongoose.connect(connectionString, { useNewUrlParser: true});
+    mongoose.connect(connectionString, { useNewUrlParser: true}).catch(e => console.log(e));
     
     User.findOne({fbId: username}, (err, fb) => {
       if (err){
