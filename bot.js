@@ -1,6 +1,6 @@
 //  __   __  ___        ___
-// |__) /  \  |  |__/ |  |  
-// |__) \__/  |  |  \ |  |  
+// |__) /  \  |  |__/ |  |
+// |__) \__/  |  |  \ |  |
 
 // This is the main file for the facebot bot.
 
@@ -20,16 +20,16 @@ require('dotenv').config();
 
 let storage = null;
 if (process.env.MONGO_URI) {
-    storage = mongoStorage = new MongoDbStorage({
-        url : process.env.MONGO_URI
-    });
+  storage = mongoStorage = new MongoDbStorage({
+    url: process.env.MONGO_URI,
+  });
 }
 
 const adapter = new FacebookAdapter({
-    
-    verify_token: process.env.FACEBOOK_VERIFY_TOKEN,
-    access_token: process.env.FACEBOOK_ACCESS_TOKEN,
-    app_secret: process.env.FACEBOOK_APP_SECRET,
+
+  verify_token: process.env.FACEBOOK_VERIFY_TOKEN,
+  access_token: process.env.FACEBOOK_ACCESS_TOKEN,
+  app_secret: process.env.FACEBOOK_APP_SECRET,
 });
 
 // emit events based on the type of facebook event being received
@@ -37,74 +37,70 @@ adapter.use(new FacebookEventTypeMiddleware());
 
 
 const controller = new Botkit({
-    webhook_uri: '/api/messages',
+  webhook_uri: '/api/messages',
 
-    adapter: adapter,
+  adapter,
 
-    storage
+  storage,
 });
 
 if (process.env.cms_uri) {
-    controller.usePlugin(new BotkitCMSHelper({
-        uri: process.env.cms_uri,
-        token: process.env.cms_token,
-    }));
+  controller.usePlugin(new BotkitCMSHelper({
+    uri: process.env.cms_uri,
+    token: process.env.cms_token,
+  }));
 }
 
-    // load traditional developer-created local custom feature modules
+// load traditional developer-created local custom feature modules
 controller.ready(() => {
-  
   // load traditional developer-created local custom feature modules
-  controller.loadModules(__dirname + '/features');
-  
-  
+  controller.loadModules(`${__dirname}/features`);
+
+
   /* catch-all that uses the CMS to trigger dialogs */
   if (controller.plugins.cms) {
     controller.on('message,direct_message', async (bot, message) => {
       try {
-        let results = false;
-        results = await controller.plugins.cms.testTrigger(bot, message);
-        
+        const results = await controller.plugins.cms.testTrigger(bot, message);
+
         if (results !== false) {
           // do not continue middleware!
           return false;
         }
-      } catch (e) {
-        console.error(`${ e }`);
+      } catch {
+        (e) => e
       }
     });
-    
+
     controller.webserver.get('/', (req, res) => {
-      
-      res.send(`This app is running Botkit ${ controller.version }.`);
+      res.send(`This app is running Botkit ${controller.version}.`);
     });
   }
 });
 
-controller.on( 'facebook_postback', (bot, message) => {
+controller.on('facebook_postback', (bot, message) => {
   // try {
-  let more = [
+  const more = [
     {
-      title: "More",
-      payload: "more"
-    }
+      title: 'More',
+      payload: 'more',
+    },
   ];
-    if (message.postback.title ==='Get Started'){
-      // createUser(message.sender.id);
-      bot.reply(message, {
-        text: 'Look to Up and enjoy.',
-        quick_replies: more
-      })
-    }
-  
-    
-      // else if (message.text ==='List of products'){
-    //   await bot.reply(message, 'List of products');
-    // }
+  if (message.postback.title === 'Get Started') {
+    // createUser(message.sender.id);
+    bot.reply(message, {
+      text: 'Look to Up and enjoy.',
+      quick_replies: more,
+    }).catch((e) => e);
+  }
+
+
+  // else if (message.text ==='List of products'){
+  //   await bot.reply(message, 'List of products');
+  // }
   // } catch (e) {
   //   console.error(`${e}`);
   // }
-  
 });
 
 // controller.on( 'facebook_postback', (bot, message) => {

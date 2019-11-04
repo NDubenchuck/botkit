@@ -9,8 +9,8 @@ const user_schema = new mongoose.Schema({
   },
   created: {
     type: Date,
-    required: [true, 'Created date is required']
-  }
+    required: [true, 'Created date is required'],
+  },
 });
 
 module.exports = user_schema;
