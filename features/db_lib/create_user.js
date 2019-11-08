@@ -15,5 +15,6 @@ module.exports = function createUser(username) {
         created: Date.now(),
       }).save();
     }
+    return true;
   });
 };

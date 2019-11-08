@@ -8,12 +8,12 @@
 const { Botkit } = require('botkit');
 const { BotkitCMSHelper } = require('botkit-plugin-cms');
 
+
 // Import a platform-specific adapter for facebook.
 
 const { FacebookAdapter, FacebookEventTypeMiddleware } = require('botbuilder-adapter-facebook');
 
-const { MongoDbStorage } = require('botbuilder-storage-mongodb');
-// const mongoose = require('mongoose');
+const { MongoDbStorage } = require('botbuilder-storage-mongodb');// const mongoose = require('mongoose');
 
 // Load process.env values from .env file
 require('dotenv').config();
@@ -54,76 +54,28 @@ if (process.env.cms_uri) {
 // load traditional developer-created local custom feature modules
 controller.ready(() => {
   // load traditional developer-created local custom feature modules
-  controller.loadModules(`${__dirname}/features`);
+  controller.loadModules(`${__dirname  }/features`);
 
 
   /* catch-all that uses the CMS to trigger dialogs */
   if (controller.plugins.cms) {
     controller.on('message,direct_message', async (bot, message) => {
-      try {
-        const results = await controller.plugins.cms.testTrigger(bot, message);
+      let results = false;
+      results = await controller.plugins.cms.testTrigger(bot, message);
+      return true;
 
-        if (results !== false) {
-          // do not continue middleware!
-          return false;
-        }
-      } catch {
-        (e) => e
+      if (results !== false) {
+        // do not continue middleware!
+        return false;
       }
     });
 
-    controller.webserver.get('/', (req, res) => {
-      res.send(`This app is running Botkit ${controller.version}.`);
-    });
+    // controller.webserver.get('/', (req, res) => {
+    //   res.send(`This app is running Botkit ${controller.version}.`);
+    // });
   }
 });
 
-controller.on('facebook_postback', (bot, message) => {
-  // try {
-  const more = [
-    {
-      title: 'More',
-      payload: 'more',
-    },
-  ];
-  if (message.postback.title === 'Get Started') {
-    // createUser(message.sender.id);
-    bot.reply(message, {
-      text: 'Look to Up and enjoy.',
-      quick_replies: more,
-    }).catch((e) => e);
-  }
-
-
-  // else if (message.text ==='List of products'){
-  //   await bot.reply(message, 'List of products');
-  // }
-  // } catch (e) {
-  //   console.error(`${e}`);
-  // }
+controller.webserver.get('/', (req, res) => {
+  res.send(`This app is running Botkit ${controller.version}.`);
 });
-
-// controller.on( 'facebook_postback', (bot, message) => {
-//   // try {
-//   if (message.postback.title ==='More'){
-//     // createUser(message.sender.id);
-//     bot.reply(message, {quick_replies: menu})
-//   } } );
-
-//
-//
-// controller.hears('Начать', 'message', async (message) => {
-//     //   try {
-//     //     return await message.quick_reply.payload==='USER_DEFINED_PAYLOAD';
-//     //   } catch (e) {
-//     //     console.error(`${e}`);
-//     //   }
-//     // }, 'message', async (bot, message) => {
-//     //   try {
-//     await bot.reply(message, 'Here is!');
-//     //   } catch (e) {
-//     //     console.error(`${e}`);
-//     //   }
-//     //
-//   }
-// );

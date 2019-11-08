@@ -1,64 +1,63 @@
 module.exports = (controller) => {
-  const shop_menu = [
-    {
-      title: 'Music',
-      payload: 'music',
-
-    },
-    {
-      title: 'Movie',
-      payload: 'Movie',
-    },
-    {
-      title: 'Hard Good',
-      payload: 'HardGood',
-    },
-    {
-      title: 'Black Tie',
-      payload: 'BlackTie',
-    },
-  ];
-
-  controller.hears('shop', 'message', async (bot, message) => {
+  const { shopMenu } = require('./lib/menu_lib/variables');
+  controller.hears('Shop', 'message', async (bot, message) => {
     await bot.reply(message, {
-      text: 'Choose category or type your own',
-      quick_replies: shop_menu,
+      text: 'Type your own category like "Cat: ...." or choose default',
+      quick_replies: shopMenu,
     });
   });
-
-  const bby = require('bestbuy')(process.env.BB_API);
-
-  controller.hears(async (message) => await (message.quick_replies.payload === 'Music' || message.quick_replies.payload === 'HardGood' || message.quick_replies.payload === 'BlackTie' || message.quick_replies.payload === 'Movie'
-  ), 'message', async (bot, message) => {
-    await bby.products(`type="${message.quick_reply.payload}"`, { show: 'image,name,salePrice' }).then((data) => {
-      for (let i = 0; i < 5; i += 1) {
-        const attachment = {
-          type: 'template',
-          payload: {
-            template_type: 'generic',
-            elements: [
-              {
-                title: ` ${data.products[i].name}`,
-                image_url: ` ${data.products[i].image}`,
-                subtitle: ` ${data.products[i].salePrice}\$`,
-                buttons: [
-                  {
-                    type: 'postback',
-                    title: 'Buy',
-                    payload: 'buy',
-                  },
-                  {
-                    type: 'postback',
-                    title: 'Add to favorite',
-                    payload: 'add-to-favorite',
-                  },
-                ],
-              },
-            ],
-          },
-        };
-        bot.reply(message, { attachment });
+  controller.on('facebook_postback', async (bot, message) => {
+    if (message.postback.title === 'Shop') {
+      await bot.reply(message, {
+        text: 'Here is a menu!',
+        quick_replies: shopMenu,
+      });
+    }
+  });
+  controller.hears([new RegExp(/^( )*?cat:/igm), 'Movie'], ['message', 'direct_message'],
+    async (bot, message) => {
+      const checkCategory = require('./check_lib/check_category');
+      if (checkCategory(message.text)) {
+        // const bby = require('bestbuy')(process.env.BB_API);
+  
+        const bby = require('./bb_lib/bb_connection');
+        await bby.products(`search=${checkCategory(message.text)}&`, { show: 'image,name,salePrice,sku', page: 1, pageSize: 4 })
+          .then(async (data) => {
+            console.log(data);
+            for (let i = 0; i < data.products.length; i += 1) {
+              const attachment = {
+                type: 'template',
+                payload: {
+                  template_type: 'generic',
+                  elements: [
+                    {
+                      title: ` ${data.products[i].name}`,
+                      image_url: ` ${data.products[i].image}`,
+                      subtitle: ` ${data.products[i].salePrice}$`,
+                      buttons: [
+                        {
+                          type: 'postback',
+                          title: 'Buy',
+                          payload: `buy ${data.products[i].sku}`,
+                        },
+                        {
+                          type: 'postback',
+                          title: 'Add to favorite',
+                          payload: `add-to-favorite ${data.products[i].sku}`,
+                        },
+                      ],
+                    },
+                  ],
+                },
+              };
+              await bot.reply(message, { attachment:attachment });
+              // await bot.reply(message,
+              //   {
+              //     text: 'Please, text me name of product, which you want to buy in format: "S:...". Or you can go back into main menu:',
+              //     quick_replies: menu,
+              //   });
+            }
+          });
       }
     });
-  });
 };
