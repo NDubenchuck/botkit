@@ -9,7 +9,6 @@ module.exports = (controller) => {
   controller.on('facebook_postback', async (bot, message) => {
     if (message.postback.title === 'Shop') {
       await bot.reply(message, {
-        text: 'Here is a menu!',
         quick_replies: shopMenu,
       });
     }
@@ -19,43 +18,16 @@ module.exports = (controller) => {
       const checkCategory = require('./check_lib/check_category');
       if (checkCategory(message.text)) {
         // const bby = require('bestbuy')(process.env.BB_API);
-  
+
         const bby = require('./bb_lib/bb_connection');
         await bby.products(`search=${checkCategory(message.text)}&`, { show: 'image,name,salePrice,sku', page: 1, pageSize: 4 })
           .then(async (data) => {
             console.log(data);
+            const { addFavorite } = require('./lib/menu_lib/atachments');
             for (let i = 0; i < data.products.length; i += 1) {
-              const attachment = {
-                type: 'template',
-                payload: {
-                  template_type: 'generic',
-                  elements: [
-                    {
-                      title: ` ${data.products[i].name}`,
-                      image_url: ` ${data.products[i].image}`,
-                      subtitle: ` ${data.products[i].salePrice}$`,
-                      buttons: [
-                        {
-                          type: 'postback',
-                          title: 'Buy',
-                          payload: `buy ${data.products[i].sku}`,
-                        },
-                        {
-                          type: 'postback',
-                          title: 'Add to favorite',
-                          payload: `add-to-favorite ${data.products[i].sku}`,
-                        },
-                      ],
-                    },
-                  ],
-                },
-              };
-              await bot.reply(message, { attachment:attachment });
-              // await bot.reply(message,
-              //   {
-              //     text: 'Please, text me name of product, which you want to buy in format: "S:...". Or you can go back into main menu:',
-              //     quick_replies: menu,
-              //   });
+              const prod = addFavorite(data.products[i].name, data.products[i].image,
+                data.products[i].salePrice, data.products[i].sku);
+              await bot.reply(message, { attachment: prod });
             }
           });
       }

@@ -54,7 +54,8 @@ if (process.env.cms_uri) {
 // load traditional developer-created local custom feature modules
 controller.ready(() => {
   // load traditional developer-created local custom feature modules
-  controller.loadModules(`${__dirname  }/features`);
+  controller.loadModules(`${__dirname}/features`);
+
 
 
   /* catch-all that uses the CMS to trigger dialogs */
@@ -69,13 +70,8 @@ controller.ready(() => {
         return false;
       }
     });
-
-    // controller.webserver.get('/', (req, res) => {
-    //   res.send(`This app is running Botkit ${controller.version}.`);
-    // });
   }
-});
-
-controller.webserver.get('/', (req, res) => {
-  res.send(`This app is running Botkit ${controller.version}.`);
+  controller.webserver.get('/', (req, res) => {
+    res.send(`This app is running Botkit ${controller.version}.`);
+  });
 });
